@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useState } from "react";
 import { getCopy } from "@/lib/copy";
 import type { Locale } from "@/lib/locale";
 import { signIn } from "./actions";
@@ -11,12 +11,21 @@ const fieldClass =
 export function SignInForm({ locale }: { locale: Locale }) {
   const copy = getCopy(locale);
   const [state, action, pending] = useActionState(signIn, null);
+  const [email, setEmail] = useState("");
 
   return (
     <form action={action} className="grid gap-2">
       <label className="grid gap-1 text-xs text-muted">
         {copy.email}
-        <input className={fieldClass} name="email" type="email" autoComplete="username" required />
+        <input
+          className={fieldClass}
+          name="email"
+          type="email"
+          autoComplete="username"
+          required
+          value={email}
+          onChange={(event) => setEmail(event.target.value)}
+        />
       </label>
       <label className="grid gap-1 text-xs text-muted">
         {copy.password}
