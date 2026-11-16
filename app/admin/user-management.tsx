@@ -124,12 +124,25 @@ export function UserManagement({
   }
 
   return (
-    <div lang={locale === "ar" ? "ar" : "en"} dir={locale === "ar" ? "rtl" : "ltr"} className="min-h-full">
-      <header className="flex h-12 items-center gap-3 bg-brand px-3 text-white">
-        <h1 className="text-sm font-semibold">
-          {locale === "ar" ? `${copy.users} ${copy.appName}` : `${copy.appName} ${copy.users}`}
-        </h1>
-        <div className="ms-auto flex items-center gap-2">
+    <div
+      lang={locale === "ar" ? "ar" : "en"}
+      dir={locale === "ar" ? "rtl" : "ltr"}
+      className="min-h-full w-full min-w-0 max-w-full"
+    >
+      <div className="overflow-x-clip">
+      <header className="flex min-h-12 flex-wrap items-center gap-x-2 gap-y-2 bg-brand px-3 py-2 text-white">
+        <div className="flex min-w-0 basis-full items-center gap-2 sm:basis-auto">
+          <h1 className="min-w-0 truncate text-sm font-semibold">
+            {locale === "ar" ? `${copy.users} ${copy.appName}` : `${copy.appName} ${copy.users}`}
+          </h1>
+          <a
+            href="/MarafeiEducationPlatform/"
+            className="inline-flex h-7 shrink-0 items-center rounded-full bg-white px-2.5 text-xs font-medium text-brand hover:bg-white/90"
+          >
+            {copy.openPlatform}
+          </a>
+        </div>
+        <div className="ms-auto flex shrink-0 items-center gap-2">
           <LanguageSwitch locale={locale} />
           <form action={signOut}>
             <button
@@ -142,9 +155,9 @@ export function UserManagement({
         </div>
       </header>
 
-      <div className="mx-auto grid max-w-5xl gap-2 p-3">
-        <div className="flex items-center gap-2">
-          <label className="relative min-w-0 flex-1">
+      <div className="mx-auto grid w-full min-w-0 max-w-5xl gap-2 p-3">
+        <div className="flex flex-wrap items-center gap-2">
+          <label className="relative min-w-0 flex-1 basis-full sm:basis-0">
             <span className="sr-only">{copy.search}</span>
             <Search className="pointer-events-none absolute start-2.5 top-1/2 size-3.5 -translate-y-1/2 text-muted" />
             <input
@@ -157,14 +170,51 @@ export function UserManagement({
               className="h-8 w-full rounded-full border border-line bg-card ps-8 pe-3 text-sm outline-none focus:border-brand"
             />
           </label>
-          <button type="button" className={primaryClass} onClick={() => setCreating(true)}>
+          <button type="button" className={`${primaryClass} w-full sm:w-auto`} onClick={() => setCreating(true)}>
             <Plus className="size-3.5" />
             {copy.addUser}
           </button>
         </div>
 
-        <div className="overflow-hidden rounded-xl border border-line bg-card">
-          <div className="overflow-x-auto">
+        <div className="min-w-0 overflow-hidden rounded-xl border border-line bg-card">
+          <ul className="divide-y divide-line lg:hidden">
+            {rows.length === 0 ? (
+              <li className="px-3 py-3 text-center text-xs text-muted">{copy.noUsers}</li>
+            ) : (
+              rows.map((user) => (
+                <li key={user.id} className="flex items-start gap-2 px-3 py-2">
+                  <div className="min-w-0 flex-1">
+                    <p className="break-words text-sm font-medium">{user.name}</p>
+                    <p className="mt-0.5 break-all text-xs text-muted">{user.email}</p>
+                    <div className="mt-1.5 flex flex-wrap items-center gap-x-2 gap-y-1">
+                      <span
+                        className={`rounded-full px-2 py-0.5 text-xs ${
+                          user.role === "admin" ? "badge-admin" : "badge-user"
+                        }`}
+                      >
+                        {user.role === "admin" ? copy.admin : copy.user}
+                      </span>
+                      <span className="text-xs text-muted">{dateFormat.format(new Date(user.createdAt))}</span>
+                    </div>
+                  </div>
+                  <button
+                    type="button"
+                    aria-haspopup="menu"
+                    aria-label={`${copy.actions}: ${user.name}`}
+                    title={copy.actions}
+                    className="group relative inline-flex size-7 shrink-0 items-center justify-center rounded-full hover:bg-brand/10"
+                    onClick={(event) => openMenu(user, event.currentTarget)}
+                  >
+                    <MoreVertical className="size-4" />
+                    <span className="pointer-events-none absolute bottom-full end-0 z-10 mb-1 hidden rounded bg-foreground px-1.5 py-0.5 text-[10px] whitespace-nowrap text-white group-hover:block group-focus-visible:block">
+                      {copy.actions}
+                    </span>
+                  </button>
+                </li>
+              ))
+            )}
+          </ul>
+          <div className="hidden overflow-x-auto lg:block">
             <table className="w-full border-collapse text-sm">
               <thead className="bg-brand/10 text-xs text-muted">
                 <tr>
@@ -188,7 +238,7 @@ export function UserManagement({
                   rows.map((user) => (
                     <tr key={user.id} className="border-t border-line">
                       <td className="px-3 py-1.5">{user.name}</td>
-                      <td className="px-3 py-1.5">{user.email}</td>
+                      <td className="break-all px-3 py-1.5">{user.email}</td>
                       <td className="px-3 py-1.5">
                         <span
                           className={`rounded-full px-2 py-0.5 text-xs ${
@@ -220,8 +270,8 @@ export function UserManagement({
               </tbody>
             </table>
           </div>
-          <div className="flex items-center justify-between gap-2 border-t border-line px-3 py-2 text-xs text-muted">
-            <p>{copy.records(from, to, filtered.length)}</p>
+          <div className="flex flex-wrap items-center justify-between gap-2 border-t border-line px-3 py-2 text-xs text-muted">
+            <p className="min-w-0">{copy.records(from, to, filtered.length)}</p>
             <div className="flex gap-1">
               <button
                 type="button"
@@ -242,6 +292,7 @@ export function UserManagement({
             </div>
           </div>
         </div>
+      </div>
       </div>
 
       {menu ? (
@@ -425,7 +476,7 @@ function UserDialog({
           </label>
         </div>
         {error ? <p className="text-xs text-danger">{copy.errors[error]}</p> : null}
-        <div className="flex justify-end gap-2">
+        <div className="flex flex-wrap justify-end gap-2">
           <button type="button" className={quietClass} onClick={onClose}>
             {copy.cancel}
           </button>
@@ -467,12 +518,12 @@ function ConfirmDialog({
       <form action={action} className="grid gap-3">
         <h2 className="text-sm font-semibold">{copy.deleteTitle}</h2>
         <input type="hidden" name="id" value={user?.id ?? ""} />
-        <p className="text-sm">
+        <p className="break-words text-sm">
           <strong className="text-brand">{user?.name}</strong> {copy.deleteWill}{" "}
           <strong className="text-danger">{copy.deleteVerb}</strong>
         </p>
         {error ? <p className="text-xs text-danger">{copy.errors[error]}</p> : null}
-        <div className="flex justify-end gap-2">
+        <div className="flex flex-wrap justify-end gap-2">
           <button type="button" className={quietClass} onClick={onClose}>
             {copy.cancel}
           </button>

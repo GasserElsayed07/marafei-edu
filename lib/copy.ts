@@ -5,6 +5,7 @@ const copy = {
   ar: {
     appName: "مرافئ",
     users: "مستخدمون",
+    openPlatform: "المنصة",
     search: "بحث",
     addUser: "إضافة مستخدم",
     name: "الاسم",
@@ -46,6 +47,7 @@ const copy = {
   en: {
     appName: "Marafei",
     users: "Users",
+    openPlatform: "Platform",
     search: "Search",
     addUser: "Add user",
     name: "Name",
