@@ -1,0 +1,18 @@
+@font-face {
+   font-family: "Al-Mohanad Extra Bold";
+   src: url("fonts/Al-Mohanad Extra Bold Extra Bold.woff2") format("woff2");
+   font-weight: bold;
+   font-style: normal;
+}
+@font-face {
+   font-family: "Noto Sans";
+   src: url("fonts/Noto Sans Regular.woff2") format("woff2");
+   font-weight: normal;
+   font-style: normal;
+}
+@font-face {
+   font-family: "Noto Sans";
+   src: url("fonts/Noto Sans Italic.woff2") format("woff2");
+   font-weight: normal;
+   font-style: italic;
+}
